@@ -1,0 +1,90 @@
+##################################
+# Syntax Colouring Map For ADS1115
+##################################
+
+#######################
+# Data types (KEYWORD1)
+#######################
+MCP23017	KEYWORD1
+I2CAddress	KEYWORD1
+IntPinType	KEYWORD1
+IntPinPol	KEYWORD1
+Port	KEYWORD1
+Mode	KEYWORD1
+PullUp	KEYWORD1
+InputPol	KEYWORD1
+Output	KEYWORD1
+IntEnable	KEYWORD1
+IntMode	KEYWORD1
+Status	KEYWORD1
+MCP23017_IO	KEYWORD1
+
+##################################
+# Methods and Functions (KEYWORD2)
+##################################
+init	KEYWORD2
+pinMode	KEYWORD2
+portMode	KEYWORD2
+portsMode	KEYWORD2
+pinPullUp	KEYWORD2
+portPullUp	KEYWORD2
+portsPullUp	KEYWORD2
+pinInputPolarity	KEYWORD2
+portInputPolarity	KEYWORD2
+portsInputPolarity	KEYWORD2
+pinInterruptEnable	KEYWORD2
+portInterruptEnable	KEYWORD2
+portsInterruptEnable	KEYWORD2
+pinInterruptMode	KEYWORD2
+portInterruptMode	KEYWORD2
+portsInterruptMode	KEYWORD2
+pinDigitalWrite	KEYWORD2
+portDigitalWrite	KEYWORD2
+portsDigitalWrite	KEYWORD2
+pinDigitalRead	KEYWORD2
+portDigitalRead	KEYWORD2
+portsDigitalRead	KEYWORD2
+interruptedBy	KEYWORD2
+setCallback	KEYWORD2
+removeCallback	KEYWORD2
+
+######################
+# Constants (LITERAL1)
+######################
+A0_0_A1_0_A2_0	LITERAL1
+A0_1_A1_0_A2_0	LITERAL1
+A0_0_A1_1_A2_0	LITERAL1
+A0_1_A1_1_A2_0	LITERAL1
+A0_0_A1_0_A2_1	LITERAL1
+A0_1_A1_0_A2_1	LITERAL1
+A0_0_A1_1_A2_1	LITERAL1
+A0_1_A1_1_A2_1	LITERAL1
+PushPull	LITERAL1
+OpenDrain	LITERAL1
+ActiveLow	LITERAL1
+ActiveHigh	LITERAL1
+PortA	LITERAL1
+PortB	LITERAL1
+Output	LITERAL1
+Input	LITERAL1
+Disable	LITERAL1
+Enable	LITERAL1
+NoInverted	LITERAL1
+Inverted	LITERAL1
+Low	LITERAL1
+High	LITERAL1
+Off	LITERAL1
+On	LITERAL1
+Change	LITERAL1
+Rising	LITERAL1
+Falling	LITERAL1
+Ok	LITERAL1
+DataTooLong	LITERAL1
+ReceivedNackOnTxAddress	LITERAL1
+ReceivedNackOnTxData	LITERAL1
+OtherError	LITERAL1
+Timeout	LITERAL1
+FailedToRequestBytes	LITERAL1
+PinOutOfRange	LITERAL1
+InterruptNotDetected	LITERAL1
+InvalidCallback	LITERAL1
