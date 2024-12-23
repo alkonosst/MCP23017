@@ -1,6 +1,6 @@
 {
   "name": "MCP23017_MR",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": {
     "name": "Maximiliano Ramirez",
     "email": "maximiliano.ramirezbravo@gmail.com"
@@ -10,7 +10,7 @@
     "url": "https://github.com/alkonosst/MCP23017.git"
   },
   "description": "A sleek, efficient Arduino library for seamless control of the MCP23017 I/O expander. Simplify your GPIO!",
-  "keywords": "arduino, io, gpio, mcp23017, expander, i2c, i/o, input, output, interrupt",
+  "keywords": "arduino, io, gpio, mcp23017, expander, i2c, input, output, interrupt",
   "license": "GPL-3.0-or-later",
   "frameworks": "arduino",
   "headers": "MCP23017.h"
