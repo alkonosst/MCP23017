@@ -34,6 +34,9 @@ void callback(const uint8_t pin, const bool value) {
 void setup() {
   Serial.begin(115200);
 
+  // Initialize I²C
+  Wire.begin();
+
   // Check if the MCP23017 is connected
   if (!io.isConnected()) {
     Serial.println("MCP23017 not found");

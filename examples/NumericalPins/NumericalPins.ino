@@ -17,6 +17,9 @@ MCP23017_IO<> io(I2CAddress::A0_0_A1_0_A2_0, Wire);
 void setup() {
   Serial.begin(115200);
 
+  // Initialize I²C
+  Wire.begin();
+
   // Check if the MCP23017 is connected
   if (!io.isConnected()) {
     Serial.println("MCP23017 not found");
