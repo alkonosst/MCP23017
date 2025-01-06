@@ -510,22 +510,23 @@ class MCP23017_IO {
 
     if (cb.callback == nullptr) return Status::Ok;
 
-    bool value = bitRead(intcap_value, detected_pin);
+    bool value  = bitRead(intcap_value, detected_pin);
+    PinEnum pin = static_cast<PinEnum>(detected_pin);
 
     switch (cb.edge) {
       case IntMode::Change:
       {
-        cb.callback(detected_pin, value);
+        cb.callback(pin, value);
       } break;
 
       case IntMode::Rising:
       {
-        if (value) cb.callback(detected_pin, value);
+        if (value) cb.callback(pin, value);
       } break;
 
       case IntMode::Falling:
       {
-        if (!value) cb.callback(detected_pin, value);
+        if (!value) cb.callback(pin, value);
       } break;
     }
 #endif
