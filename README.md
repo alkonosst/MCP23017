@@ -8,6 +8,19 @@
   <b>Take control of your GPIOs!</b>
 </p>
 
+<p align="center">
+  <a href="https://www.ardu-badge.com/MCP23017_MR">
+    <img src="https://www.ardu-badge.com/badge/MCP23017_MR.svg?" alt="Arduino Library Badge">
+  </a>
+  <a href="https://registry.platformio.org/libraries/alkonosst/MCP23017_MR">
+    <img src="https://badges.registry.platformio.org/packages/alkonosst/library/MCP23017_MR.svg" alt="PlatformIO Registry">
+  </a>
+  <br><br>
+  <a href="https://ko-fi.com/alkonosst">
+    <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Ko-fi">
+    </a>
+</p>
+
 ---
 
 # Table of contents <!-- omit in toc -->
@@ -29,6 +42,7 @@
   - [Reading the value of a pin or port](#reading-the-value-of-a-pin-or-port)
   - [Enabling interruptions and use of callbacks](#enabling-interruptions-and-use-of-callbacks)
   - [Interrupt modes and drawbacks](#interrupt-modes-and-drawbacks)
+- [License](#license)
 
 ---
 
@@ -529,3 +543,7 @@ The **MCP23017** has two interrupt modes (_refer to section 3.5.5 of the datashe
 As you can see, `IntMode::Rising` and `IntMode::Falling` modes can block the interrupt line if the pin remains in the triggered state. This can lead to missed events and unreliable operation. **Use these modes with caution and ensure that the pin state is reset before the next interrupt can occur**.
 
 The recommended mode is `IntMode::Change` in almost all cases, as it is more versatile and easier to handle. If you need to execute some action only on a specific edge, you can use this mode combined with a callback configured to trigger only on the desired edge (_refer to the [Enabling interruptions and use of callbacks](#enabling-interruptions-and-use-of-callbacks) section_).
+
+# License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
