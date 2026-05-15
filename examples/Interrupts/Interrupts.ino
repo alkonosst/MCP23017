@@ -1,11 +1,13 @@
 /**
- * SPDX-FileCopyrightText: 2025 Maximiliano Ramirez <maximiliano.ramirezbravo@gmail.com>
+ * SPDX-FileCopyrightText: 2026 Maximiliano Ramirez <maximiliano.ramirezbravo@gmail.com>
  *
  * SPDX-License-Identifier: MIT
  */
 
+#include <Arduino.h>
+
 // Uncomment the following line if you want to use custom callbacks
-#define MCP23017_USE_CALLBACKS
+// #define MCP23017_USE_CALLBACKS
 #include "MCP23017.h"
 
 // Pins definition
