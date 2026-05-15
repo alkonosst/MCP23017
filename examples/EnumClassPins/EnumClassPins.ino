@@ -1,8 +1,10 @@
 /**
- * SPDX-FileCopyrightText: 2025 Maximiliano Ramirez <maximiliano.ramirezbravo@gmail.com>
+ * SPDX-FileCopyrightText: 2026 Maximiliano Ramirez <maximiliano.ramirezbravo@gmail.com>
  *
  * SPDX-License-Identifier: MIT
  */
+
+#include <Arduino.h>
 
 #include "MCP23017.h"
 

@@ -1,12 +1,11 @@
 /**
- * SPDX-FileCopyrightText: 2025 Maximiliano Ramirez <maximiliano.ramirezbravo@gmail.com>
+ * SPDX-FileCopyrightText: 2026 Maximiliano Ramirez <maximiliano.ramirezbravo@gmail.com>
  *
  * SPDX-License-Identifier: MIT
  */
 
 #pragma once
 
-#include <Arduino.h>
 #include <Wire.h>
 
 #define MCP23017_PAIR_ERROR_TEXT "This method requires pairs of pin and value arguments"
@@ -111,41 +110,41 @@ class MCP23017_IO {
       IOCON::disslw | IOCON::seqop | IOCON::mirror | int_pin_type_flag | int_pin_pol_flag;
 
     // Config
-    status = writeRegisters(
+    status = _writeRegisters(
       Register::ioconA, static_cast<uint8_t>(port_config), static_cast<uint8_t>(port_config));
     if (status != Status::Ok) return status;
 
     // All inputs
-    status = writeRegisters(Register::iodirA, 0xFF, 0xFF);
+    status = _writeRegisters(Register::iodirA, 0xFF, 0xFF);
     if (status != Status::Ok) return status;
 
     // Pull-ups disabled
-    status = writeRegisters(Register::gppuA, 0x00, 0x00);
+    status = _writeRegisters(Register::gppuA, 0x00, 0x00);
     if (status != Status::Ok) return status;
 
     // Non-inverted inputs
-    status = writeRegisters(Register::ipolA, 0x00, 0x00);
+    status = _writeRegisters(Register::ipolA, 0x00, 0x00);
     if (status != Status::Ok) return status;
 
     // Outputs low
-    status = writeRegisters(Register::olatA, 0x00, 0x00);
+    status = _writeRegisters(Register::olatA, 0x00, 0x00);
     if (status != Status::Ok) return status;
 
     // Interrupts disabled
-    status = writeRegisters(Register::gpintenA, 0x00, 0x00);
+    status = _writeRegisters(Register::gpintenA, 0x00, 0x00);
     if (status != Status::Ok) return status;
 
     // Interrupt change/rising
-    status = writeRegisters(Register::defvalA, 0x00, 0x00);
+    status = _writeRegisters(Register::defvalA, 0x00, 0x00);
     if (status != Status::Ok) return status;
 
     // Interrupt mode change
-    status = writeRegisters(Register::intconA, 0x00, 0x00);
+    status = _writeRegisters(Register::intconA, 0x00, 0x00);
     if (status != Status::Ok) return status;
 
     // Clear interrupts
     uint16_t intcap_value;
-    return readRegisters(Register::intcapA, intcap_value);
+    return _readRegisters(Register::intcapA, intcap_value);
   }
 
   /**
@@ -162,13 +161,13 @@ class MCP23017_IO {
 
     _temp_reg = Register::iodirA;
 
-    Status status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    Status status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    return writePin(pin, mode, vs...);
+    return _writePin(pin, mode, vs...);
   }
 
   /**
@@ -179,7 +178,7 @@ class MCP23017_IO {
    */
   Status portMode(const Port port, const Mode mode) {
     _temp_reg = (port == Port::PortA ? Register::iodirA : Register::iodirB);
-    return writeRegister(_temp_reg, mode == Mode::Input ? 0xFF : 0x00);
+    return _writeRegister(_temp_reg, mode == Mode::Input ? 0xFF : 0x00);
   }
 
   /**
@@ -189,7 +188,7 @@ class MCP23017_IO {
    */
   Status portsMode(const Mode mode) {
     uint8_t value = (mode == Mode::Input ? 0xFF : 0x00);
-    return writeRegisters(Register::iodirA, value, value);
+    return _writeRegisters(Register::iodirA, value, value);
   }
 
   /**
@@ -206,13 +205,13 @@ class MCP23017_IO {
 
     _temp_reg = Register::gppuA;
 
-    Status status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    Status status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    return writePin(pin, pullup, vs...);
+    return _writePin(pin, pullup, vs...);
   }
 
   /**
@@ -223,7 +222,7 @@ class MCP23017_IO {
    */
   Status portPullUp(const Port port, const PullUp pullup) {
     _temp_reg = (port == Port::PortA ? Register::gppuA : Register::gppuB);
-    return writeRegister(_temp_reg, pullup == PullUp::Enable ? 0xFF : 0x00);
+    return _writeRegister(_temp_reg, pullup == PullUp::Enable ? 0xFF : 0x00);
   }
 
   /**
@@ -233,7 +232,7 @@ class MCP23017_IO {
    */
   Status portsPullUp(const PullUp pullup) {
     uint8_t value = (pullup == PullUp::Enable ? 0xFF : 0x00);
-    return writeRegisters(Register::gppuA, value, value);
+    return _writeRegisters(Register::gppuA, value, value);
   }
 
   /**
@@ -250,13 +249,13 @@ class MCP23017_IO {
 
     _temp_reg = Register::ipolA;
 
-    Status status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    Status status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    return writePin(pin, polarity, vs...);
+    return _writePin(pin, polarity, vs...);
   }
 
   /**
@@ -267,7 +266,7 @@ class MCP23017_IO {
    */
   Status portInputPolarity(const Port port, const InputPol polarity) {
     _temp_reg = (port == Port::PortA ? Register::ipolA : Register::ipolB);
-    return writeRegister(_temp_reg, polarity == InputPol::Inverted ? 0xFF : 0x00);
+    return _writeRegister(_temp_reg, polarity == InputPol::Inverted ? 0xFF : 0x00);
   }
 
   /**
@@ -277,7 +276,7 @@ class MCP23017_IO {
    */
   Status portsInputPolarity(const InputPol polarity) {
     uint8_t value = (polarity == InputPol::Inverted ? 0xFF : 0x00);
-    return writeRegisters(Register::ipolA, value, value);
+    return _writeRegisters(Register::ipolA, value, value);
   }
 
   /**
@@ -294,24 +293,24 @@ class MCP23017_IO {
 
     _temp_reg = Register::defvalA;
 
-    Status status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    Status status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    status = writePin(pin, mode, vs...);
+    status = _writePin(pin, mode, vs...);
     if (status != Status::Ok) return status;
 
     _temp_reg = Register::intconA;
 
-    status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    return writePin(pin, mode, vs...);
+    return _writePin(pin, mode, vs...);
   }
 
   /**
@@ -323,11 +322,11 @@ class MCP23017_IO {
   Status portInterruptMode(const Port port, const IntMode mode) {
     _temp_reg = (port == Port::PortA ? Register::defvalA : Register::defvalB);
 
-    Status status = writeRegister(_temp_reg, mode == IntMode::Falling ? 0xFF : 0x00);
+    Status status = _writeRegister(_temp_reg, mode == IntMode::Falling ? 0xFF : 0x00);
     if (status != Status::Ok) return status;
 
     _temp_reg = (port == Port::PortA ? Register::intconA : Register::intconB);
-    return writeRegister(_temp_reg, mode == IntMode::Change ? 0x00 : 0xFF);
+    return _writeRegister(_temp_reg, mode == IntMode::Change ? 0x00 : 0xFF);
   }
 
   /**
@@ -338,11 +337,11 @@ class MCP23017_IO {
   Status portsInterruptMode(const IntMode mode) {
     uint8_t value = (mode == IntMode::Falling ? 0xFF : 0x00);
 
-    Status status = writeRegisters(Register::defvalA, value, value);
+    Status status = _writeRegisters(Register::defvalA, value, value);
     if (status != Status::Ok) return status;
 
     value = (mode == IntMode::Change ? 0x00 : 0xFF);
-    return writeRegisters(Register::intconA, value, value);
+    return _writeRegisters(Register::intconA, value, value);
   }
 
   /**
@@ -359,13 +358,13 @@ class MCP23017_IO {
 
     _temp_reg = Register::gpintenA;
 
-    Status status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    Status status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    return writePin(pin, enable, vs...);
+    return _writePin(pin, enable, vs...);
   }
 
   /**
@@ -376,7 +375,7 @@ class MCP23017_IO {
    */
   Status portInterruptEnable(const Port port, const IntEnable enable) {
     _temp_reg = (port == Port::PortA ? Register::gpintenA : Register::gpintenB);
-    return writeRegister(_temp_reg, enable == IntEnable::On ? 0xFF : 0x00);
+    return _writeRegister(_temp_reg, enable == IntEnable::On ? 0xFF : 0x00);
   }
 
   /**
@@ -386,7 +385,7 @@ class MCP23017_IO {
    */
   Status portsInterruptEnable(const IntEnable enable) {
     uint8_t value = (enable == IntEnable::On ? 0xFF : 0x00);
-    return writeRegisters(Register::gpintenA, value, value);
+    return _writeRegisters(Register::gpintenA, value, value);
   }
 
   /**
@@ -403,13 +402,13 @@ class MCP23017_IO {
 
     _temp_reg = Register::olatA;
 
-    Status status = readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
+    Status status = _readRegisters(_temp_reg, _temp_reg_last_value[0], _temp_reg_last_value[1]);
     if (status != Status::Ok) return status;
 
     _temp_reg_new_value[0] = _temp_reg_last_value[0];
     _temp_reg_new_value[1] = _temp_reg_last_value[1];
 
-    return writePin(pin, output, vs...);
+    return _writePin(pin, output, vs...);
   }
 
   /**
@@ -420,7 +419,7 @@ class MCP23017_IO {
    */
   Status portDigitalWrite(const Port port, const Output output) {
     _temp_reg = (port == Port::PortA ? Register::gpioA : Register::gpioB);
-    return writeRegister(_temp_reg, output == Output::High ? 0xFF : 0x00);
+    return _writeRegister(_temp_reg, output == Output::High ? 0xFF : 0x00);
   }
 
   /**
@@ -430,7 +429,7 @@ class MCP23017_IO {
    */
   Status portsDigitalWrite(const Output output) {
     uint8_t value = (output == Output::High ? 0xFF : 0x00);
-    return writeRegisters(Register::gpioA, value, value);
+    return _writeRegisters(Register::gpioA, value, value);
   }
 
   /**
@@ -445,7 +444,7 @@ class MCP23017_IO {
 
     uint16_t pin_mask;
 
-    Status status = readRegisters(Register::gpioA, pin_mask);
+    Status status = _readRegisters(Register::gpioA, pin_mask);
     if (status != Status::Ok) return status;
 
     pin_value = bitRead(pin_mask, static_cast<uint8_t>(pin));
@@ -460,7 +459,7 @@ class MCP23017_IO {
    */
   Status portDigitalRead(Port port, uint8_t& port_value) {
     Register reg = (port == Port::PortA ? Register::gpioA : Register::gpioB);
-    return readRegister(reg, port_value);
+    return _readRegister(reg, port_value);
   }
 
   /**
@@ -471,7 +470,7 @@ class MCP23017_IO {
   Status portsDigitalRead(uint16_t& port_values) {
     uint8_t port_a, port_b;
 
-    Status status = readRegisters(Register::gpioA, port_a, port_b);
+    Status status = _readRegisters(Register::gpioA, port_a, port_b);
     if (status != Status::Ok) return status;
 
     port_values = port_a | (port_b << 8);
@@ -488,7 +487,7 @@ class MCP23017_IO {
   Status interruptedBy(int8_t& detected_pin, uint16_t& intcap_value) {
     uint16_t pin_mask;
 
-    Status status = readRegisters(Register::intfA, pin_mask);
+    Status status = _readRegisters(Register::intfA, pin_mask);
     if (status != Status::Ok) return status;
 
     detected_pin = -1;
@@ -500,7 +499,7 @@ class MCP23017_IO {
       }
     }
 
-    status = readRegisters(Register::intcapA, intcap_value);
+    status = _readRegisters(Register::intcapA, intcap_value);
     if (status != Status::Ok) return status;
 
     if (detected_pin == -1) return Status::InterruptNotDetected;
@@ -607,44 +606,44 @@ class MCP23017_IO {
     return static_cast<IOCON>(static_cast<uint8_t>(a) | static_cast<uint8_t>(b));
   }
 
-  template <typename Value, typename... Ts>
-  Status writePin(PinEnum pin, Value value, const Ts&... vs) {
-    if (static_cast<uint8_t>(pin) < 0 || static_cast<uint8_t>(pin) > 15)
-      return Status::PinOutOfRange;
-
+  // Non-template overload: selected by the compiler when Value == IntMode.
+  // Remaps IntMode values to the bit patterns expected by defvalA and intconA.
+  void _applyIntModeTransform(IntMode& value) {
     switch (_temp_reg) {
       case Register::defvalA:
       {
         switch (value) {
-          case static_cast<Value>(IntMode::Change):
-          case static_cast<Value>(IntMode::Rising):
-          {
-            value = static_cast<Value>(0);
-          } break;
-
-          case static_cast<Value>(IntMode::Falling):
-          {
-            value = static_cast<Value>(1);
-          } break;
+          case IntMode::Change:
+          case IntMode::Rising: value = static_cast<IntMode>(0); break;
+          case IntMode::Falling: value = static_cast<IntMode>(1); break;
+          default: break;
         }
       } break;
 
       case Register::intconA:
       {
         switch (value) {
-          case static_cast<Value>(IntMode::Change):
-          {
-            value = static_cast<Value>(0);
-          } break;
-
-          case static_cast<Value>(IntMode::Rising):
-          case static_cast<Value>(IntMode::Falling):
-          {
-            value = static_cast<Value>(1);
-          } break;
+          case IntMode::Change: value = static_cast<IntMode>(0); break;
+          case IntMode::Rising:
+          case IntMode::Falling: value = static_cast<IntMode>(1); break;
+          default: break;
         }
       } break;
+
+      default: break;
     }
+  }
+
+  // Template fallback: no-op for all other Value types (Mode, PullUp, Output, IntEnable...).
+  template <typename Value>
+  void _applyIntModeTransform(Value&) {}
+
+  template <typename Value, typename... Ts>
+  Status _writePin(PinEnum pin, Value value, const Ts&... vs) {
+    if (static_cast<uint8_t>(pin) < 0 || static_cast<uint8_t>(pin) > 15)
+      return Status::PinOutOfRange;
+
+    _applyIntModeTransform(value);
 
     uint8_t reg_index = 0;
 
@@ -659,32 +658,32 @@ class MCP23017_IO {
       bitToggle(_temp_reg_new_value[reg_index], static_cast<uint8_t>(pin));
     }
 
-    return writePin(vs...);
+    return _writePin(vs...);
   }
 
-  Status writePin() {
+  Status _writePin() {
     bool write_a = (_temp_reg_new_value[0] != _temp_reg_last_value[0]);
     bool write_b = (_temp_reg_new_value[1] != _temp_reg_last_value[1]);
 
     if (write_a && write_b) {
-      return writeRegisters(_temp_reg, _temp_reg_new_value[0], _temp_reg_new_value[1]);
+      return _writeRegisters(_temp_reg, _temp_reg_new_value[0], _temp_reg_new_value[1]);
     } else if (write_a) {
-      return writeRegister(_temp_reg, Port::PortA, _temp_reg_new_value[0]);
+      return _writeRegister(_temp_reg, Port::PortA, _temp_reg_new_value[0]);
     } else if (write_b) {
-      return writeRegister(_temp_reg, Port::PortB, _temp_reg_new_value[1]);
+      return _writeRegister(_temp_reg, Port::PortB, _temp_reg_new_value[1]);
     }
 
     return Status::Ok;
   }
 
-  Status writeRegister(Register reg, uint8_t value) {
+  Status _writeRegister(Register reg, uint8_t value) {
     _i2c.beginTransmission(static_cast<uint8_t>(_address));
     _i2c.write(static_cast<uint8_t>(reg));
     _i2c.write(value);
     return static_cast<Status>(_i2c.endTransmission());
   }
 
-  Status writeRegister(Register reg, Port port, uint8_t value) {
+  Status _writeRegister(Register reg, Port port, uint8_t value) {
     uint8_t selected_reg = static_cast<uint8_t>(reg) + static_cast<uint8_t>(port);
     _i2c.beginTransmission(static_cast<uint8_t>(_address));
     _i2c.write(selected_reg);
@@ -692,7 +691,7 @@ class MCP23017_IO {
     return static_cast<Status>(_i2c.endTransmission());
   }
 
-  Status writeRegisters(Register reg, uint8_t port_a_value, uint8_t port_b_value) {
+  Status _writeRegisters(Register reg, uint8_t port_a_value, uint8_t port_b_value) {
     _i2c.beginTransmission(static_cast<uint8_t>(_address));
     _i2c.write(static_cast<uint8_t>(reg));
     _i2c.write(port_a_value);
@@ -700,14 +699,14 @@ class MCP23017_IO {
     return static_cast<Status>(_i2c.endTransmission());
   }
 
-  Status readRegister(Register reg, uint8_t& reg_value) {
+  Status _readRegister(Register reg, uint8_t& reg_value) {
     _i2c.beginTransmission(static_cast<uint8_t>(_address));
     _i2c.write(static_cast<uint8_t>(reg));
 
     Status status = static_cast<Status>(_i2c.endTransmission());
     if (status != Status::Ok) return status;
 
-    const uint8_t bytes = 1;
+    const size_t bytes = 1;
 
     if (_i2c.requestFrom(static_cast<uint8_t>(_address), bytes) != bytes)
       return Status::FailedToRequestBytes;
@@ -716,14 +715,14 @@ class MCP23017_IO {
     return Status::Ok;
   }
 
-  Status readRegisters(Register reg, uint8_t& port_a, uint8_t& port_b) {
+  Status _readRegisters(Register reg, uint8_t& port_a, uint8_t& port_b) {
     _i2c.beginTransmission(static_cast<uint8_t>(_address));
     _i2c.write(static_cast<uint8_t>(reg));
 
     Status status = static_cast<Status>(_i2c.endTransmission());
     if (status != Status::Ok) return status;
 
-    const uint8_t bytes = 2;
+    const size_t bytes = 2;
 
     if (_i2c.requestFrom(static_cast<uint8_t>(_address), bytes) != bytes)
       return Status::FailedToRequestBytes;
@@ -733,10 +732,10 @@ class MCP23017_IO {
     return Status::Ok;
   }
 
-  Status readRegisters(Register reg, uint16_t& reg_values) {
+  Status _readRegisters(Register reg, uint16_t& reg_values) {
     uint8_t port_a, port_b;
 
-    Status status = readRegisters(reg, port_a, port_b);
+    Status status = _readRegisters(reg, port_a, port_b);
     if (status != Status::Ok) return status;
 
     reg_values = port_a | (port_b << 8);
